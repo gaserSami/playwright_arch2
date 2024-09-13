@@ -1,0 +1,21 @@
+{
+  "name": "playwright_tutorial",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "codegen": "npx playwright codegen https://admin.shopify.com/store/rubixteststore/apps/yozo-ai-staging"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.47.0",
+    "@types/node": "^22.5.1"
+  },
+  "dependencies": {
+    "-": "^0.0.1",
+    "csv-parser": "^3.0.0",
+    "dotenv": "^16.4.5"
+  }
+}
