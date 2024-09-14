@@ -1,5 +1,5 @@
 import { Page } from '@playwright/test';
-import { login } from "../../utils/login.ts";
+import { login } from "../../utils/login";
 import * as dotenv from 'dotenv';
 
 dotenv.config();

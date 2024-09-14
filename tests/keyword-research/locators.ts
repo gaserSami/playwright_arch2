@@ -22,13 +22,14 @@ export const volumeSortBtn = (frame: FrameLocator) => frame.getByRole('button', 
 export const compSortBtn = (frame: FrameLocator) => frame.getByRole('button', { name: 'Competition' });
 export const resultsRowByKeyword = (frame: FrameLocator, keyword: string) => frame.getByRole('row').filter({ hasText: keyword });
 export const resultsRowByIndex = (frame: FrameLocator, index: number) => frame.getByRole('row').nth(index);
-export const rowCheckBoxByKeyword = (frame: FrameLocator, keyword: string) => resultsRowByKeyword(frame, keyword).getByRole('cell', { name: 'Select keyword' });
+export const rowCheckBoxByKeyword = (frame: FrameLocator, keyword: string) => resultsRowByKeyword(frame, keyword).getByRole('cell').nth(0);
 export const rowWriteBtnByKeyword = (frame: FrameLocator, keyword: string) => resultsRowByKeyword(frame, keyword).getByRole('button', { name: 'Write' });
 export const rowLikeBtnByKeyword = (frame: FrameLocator, keyword: string) => resultsRowByKeyword(frame, keyword).getByRole('button').nth(1);
 export const rowVolumeByKeyword = (frame: FrameLocator, keyword: string) => resultsRowByKeyword(frame, keyword).getByRole('cell').nth(1);
 export const rowCompByKeyword = (frame: FrameLocator, keyword: string) => resultsRowByKeyword(frame, keyword).getByRole('cell').nth(2);
-export const rowCheckBoxByIndex = (frame: FrameLocator, index: number) => resultsRowByIndex(frame, index).getByRole('cell', { name: 'Select keyword' });
+export const rowCheckBoxByIndex = (frame: FrameLocator, index: number) => resultsRowByIndex(frame, index).getByRole('cell').nth(0);
 export const rowWriteBtnByIndex = (frame: FrameLocator, index: number) => resultsRowByIndex(frame, index).getByRole('button', { name: 'Write' });
 export const rowLikeBtnByIndex = (frame: FrameLocator, index: number) => resultsRowByIndex(frame, index).getByRole('button').nth(1);
 export const rowVolumeByIndex = (frame: FrameLocator, index: number) => resultsRowByIndex(frame, index).getByRole('cell').nth(1);
 export const rowCompByIndex = (frame: FrameLocator, index: number) => resultsRowByIndex(frame, index).getByRole('cell').nth(2);
+export const floatingBtns = (page: Page) => page.locator('.Polaris-BulkActions__ButtonGroupWrapper').locator("button");

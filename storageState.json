@@ -1,0 +1,135 @@
+{
+  "cookies": [
+    {
+      "name": "device_id",
+      "value": "AP1sxDBYM6dwN%2BRagbg%2FBIKa5ef4EymE465l1Tu%2FTXVcQbhVp6mehDsx9BIpgvpy17nwXGbjipi9Xluk%2FtAmR%2F8sHyKiW96gPeh3aGQ%2BygNpko9tbfn72zw6GCWysHtARMnCzuKPVyTKJHkE3bLtdN0%3D--YSmoNAcXcshD5TXq--6fHriHzaBOzeSRW5NBT8Ag%3D%3D",
+      "domain": "accounts.shopify.com",
+      "path": "/",
+      "expires": 1760873657.393637,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "master_device_id",
+      "value": "726b2b7e-db7f-442e-b27d-5d4d35789f7f",
+      "domain": ".shopify.com",
+      "path": "/",
+      "expires": 1757849668.363855,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_shopify_y",
+      "value": "f05011a3-A4C9-4D27-D786-9A1251BAEDF0",
+      "domain": ".shopify.com",
+      "path": "/",
+      "expires": 1757849670.80806,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "_shopify_s",
+      "value": "f05011ab-7BB0-4920-D4D3-718192459E7C",
+      "domain": ".shopify.com",
+      "path": "/",
+      "expires": 1726315470.80823,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "device_fp_id",
+      "value": "6nqSJ3JV%2BkrQM0zut%2BrMGtKdfaj7kJHvQAAm0rqFLBNR4vdaiWGOx27JQe5vwTil5%2BXgf1BvnTdq60L5QyI5fUg1R3lQ53iiez6Zhs6SLvpPNCNsPYHizQx27x%2B6r%2Bsr9CaY5bLgHABzwK%2FLdptfzYhXGZA%3D--L7kpc5bHhzEb5RBt--Kb%2F4KpuXyTI1tVz2Esme1w%3D%3D",
+      "domain": "accounts.shopify.com",
+      "path": "/",
+      "expires": 1760873660.61738,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "__cflb",
+      "value": "0H28vk2VKwPbLoawFj9mU2fhedYxxWRCwCqihkbxyPT",
+      "domain": "api2.hcaptcha.com",
+      "path": "/",
+      "expires": 1726315461.672209,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "logged_in",
+      "value": "true",
+      "domain": ".shopify.com",
+      "path": "/",
+      "expires": 1734176069.036075,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_identity_session",
+      "value": "ce15d6646c41e336de6cc311ad5baa8d",
+      "domain": "accounts.shopify.com",
+      "path": "/",
+      "expires": 1760873669.364474,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "__Host-_identity_session_same_site",
+      "value": "ce15d6646c41e336de6cc311ad5baa8d",
+      "domain": "accounts.shopify.com",
+      "path": "/",
+      "expires": 1760873669.364627,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "koa.sid",
+      "value": "YogxxNil4P9qCPckdWuRfiXHlNAhKaKA",
+      "domain": "admin.shopify.com",
+      "path": "/",
+      "expires": 1726400070.344476,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "koa.sid.sig",
+      "value": "t0sO2JJBtXn24BrMzprq9XwQ0Ms",
+      "domain": "admin.shopify.com",
+      "path": "/",
+      "expires": 1726400070.344545,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "is_shopify_merchant",
+      "value": "1",
+      "domain": ".shopify.com",
+      "path": "/",
+      "expires": 1757849670.808338,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://admin.shopify.com",
+      "localStorage": [
+        {
+          "name": "bugsnag-anonymous-id",
+          "value": "cm122l5lm0000356irqq4r1kw"
+        }
+      ]
+    }
+  ]
+}
