@@ -57,6 +57,15 @@ class WordsBox {
       await this.removeKeywordLocator(word).click();
     }
   }
+
+  /**
+   * Gets the count of words in the WordsBox.
+   * @returns {Promise<number>} - A promise that resolves to the count of words.
+   */
+  async count(): Promise<number> {
+    return await this.containerLocator().locator('button').count();
+  }
+  
 }
 
 export { WordsBox };

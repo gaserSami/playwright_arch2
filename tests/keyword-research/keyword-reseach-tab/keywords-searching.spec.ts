@@ -1,35 +1,38 @@
 import { expect } from "@playwright/test";
 import { test } from "../../../utils/test";
 import * as locators from "../../../utils/locators";
+import { WordsBox } from "../../../utils/automation/wordsBox";
+import { Table } from "../../../utils/automation/table";
 import "../setup";
+import { Common } from "../../../utils/automation/common";
+
+const placeholder = 'Keyword(s)';
 
 test("Search button should be disabled when there are no keywords enabled otherwise", async ({ page }) => {
   const frame = await locators.frame(page);
+  const wordsBox = new WordsBox(page, placeholder);
+
   await expect(frame.getByRole("button", { name: "Search" })).toBeDisabled();
-  await frame.getByPlaceholder('Keyword(s)').fill("food");
-  await frame.getByPlaceholder('Keyword(s)').press("Enter");
+  await wordsBox.addWords(["food"]);
   await expect(frame.getByRole("button", { name: "Search" })).toBeEnabled();
-  await frame.getByPlaceholder('Keyword(s)').press("Backspace");
+  await wordsBox.removeWords(["food"]);
   await expect(frame.getByRole("button", { name: "Search" })).toBeDisabled();
 });
 
 test.fixme("search should show results", async ({ page }) => {
   const frame = await locators.frame(page);
-  await frame.getByPlaceholder('Keyword(s)').fill("food");
-  await frame.getByPlaceholder('Keyword(s)').press("Enter");
+  const wordsBox = new WordsBox(page, placeholder);
+
+  await wordsBox.addWords(["food"]);
   await frame.getByRole("button", { name: "Search" }).click();
+  await Common.waitLoading(frame);
   await expect(frame.getByLabel('Keyword Research')).toBeVisible();
-  await frame.getByLabel("Count").waitFor({ state: "visible", timeout: 20000 });
-  if (await frame.getByRole("row").count() > 0) {
-    expect(true).toBe(true);
-  } else {
-    expect(true).toBe(false);
-  }
+  await expect(await Table.rowCount(frame)).toBeGreaterThan(0);
 });
 
 test("search should send the correct request data", async ({ page }) => {
-  // Get the frame and the expected data
   const frame = await locators.frame(page);
+  const wordsBox = new WordsBox(page, placeholder);
   const expectedKeywords = "food";
   const langTarget = "Dutch";
   const countryTarget = "Morocco";
@@ -59,21 +62,17 @@ test("search should send the correct request data", async ({ page }) => {
   }
 
   let requestPayload;
-  // Intercept the network request
   page.on('request', request => {
     if (request.url() === "https://staging-yozo.cortechs-ai.com/api/keywords?shop=rubixteststore.myshopify.com") {
       requestPayload = request.postDataJSON();
     }
   });
 
-  // Fill the form and submit
-  await frame.getByPlaceholder('Keyword(s)').fill(expectedKeywords);
-  await frame.getByPlaceholder('Keyword(s)').press("Enter");
+  await wordsBox.addWords([expectedKeywords]);
   await frame.getByRole("combobox").nth(1).selectOption(langTarget);
   await frame.getByRole("combobox").nth(0).selectOption(countryTarget);
   await frame.getByRole("button", { name: "Search" }).click();
 
-  // Validate the request payload
   expect(requestPayload).toBeDefined();
   expect(requestPayload.keywords).toEqual([expectedKeywords]);
   expect(requestPayload.language_id.toString()).toEqual(expectedLanguageId);

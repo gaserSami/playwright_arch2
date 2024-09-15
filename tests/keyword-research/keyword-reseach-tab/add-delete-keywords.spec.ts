@@ -123,9 +123,10 @@ test("shouldn't add duplicate keywords (Request)", async ({ page }) => {
   expect(requestPayload.keywords).toEqual([keyword]);
 });
 
-test.only("there should be a message for duplicate keywords", async ({ page }) => {
+test("there should be a message for duplicate keywords", async ({ page }) => {
+  const frame = await locators.frame(page);
   const wordsBox = new WordsBox(page, placeholder);
   const keyword = "example";
   await wordsBox.addWords([keyword, keyword]);
-  await expect(await page.getByText("Keyword already exists")).toBeVisible();
+  await expect(await frame.getByText("Keyword already exists")).toBeVisible();
 });
