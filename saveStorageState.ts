@@ -1,6 +1,20 @@
 import { chromium } from '@playwright/test';
 import { login } from './utils/login';
 import * as dotenv from 'dotenv';
+// import * as readline from 'readline';
+
+// function waitForManualInput(): Promise<void> {
+//   return new Promise<void>(resolve => {
+//     const rl = readline.createInterface({
+//       input: process.stdin,
+//       output: process.stdout,
+//     });
+//     rl.question('Please solve the CAPTCHA and press Enter to continue...', () => {
+//       rl.close();
+//       resolve();
+//     });
+//   });
+// }
 
 dotenv.config();
 

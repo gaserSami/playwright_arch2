@@ -39,6 +39,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var test_1 = require("@playwright/test");
 var login_1 = require("./utils/login");
 var dotenv = require("dotenv");
+// import * as readline from 'readline';
+// function waitForManualInput(): Promise<void> {
+//   return new Promise<void>(resolve => {
+//     const rl = readline.createInterface({
+//       input: process.stdin,
+//       output: process.stdout,
+//     });
+//     rl.question('Please solve the CAPTCHA and press Enter to continue...', () => {
+//       rl.close();
+//       resolve();
+//     });
+//   });
+// }
 dotenv.config();
 (function () { return __awaiter(void 0, void 0, void 0, function () {
     var browser, page, error_1;

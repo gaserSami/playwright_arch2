@@ -1,11 +1,5 @@
-import { Page } from '@playwright/test';
-import { login } from "../../utils/login";
-import * as dotenv from 'dotenv';
+import { test } from "../../utils/test";
 
-dotenv.config();
-
-export const setup = async (page: Page) => {
-  await page.goto("/");
-  await login(page);
+test.beforeEach(async ({ page }) => {
   await page.goto("/apps/yozo-ai-staging/keyword-research");
-};
+});
