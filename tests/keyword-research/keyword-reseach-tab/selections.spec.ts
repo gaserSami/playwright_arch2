@@ -52,17 +52,18 @@ test.only("number of selections should be displayed correctly", async ({ page })
   await Common.waitLoading(frame);
 
   await Table.clickOnHeaderCell(frame, 0);
-  await expect(await (await Table.getRow(frame, {rowIndex: 0})).textContent()).toContain("20");
+  await expect(frame.getByText("Deselect all 20 keywords20")).toBeVisible();
   await Table.clickOnRows(frame, [1]);
-  await expect(await (await Table.getRow(frame, {rowIndex: 0})).textContent()).toContain("19");
+  await expect(frame.getByText("Select all 20 keywords19")).toBeVisible();
   await Table.deselectAllRows(frame);
-  await expect(await (await Table.getRow(frame, {rowIndex: 0})).textContent()).not.toContain("19");
+  await expect(frame.getByText("Deselect all 20 keywords20")).not.toBeVisible();
+  await expect(frame.getByText("Deselect all 20 keywords20")).not.toBeVisible(); 
 
   await Table.clickOnHeaderCell(frame, 0);
-  await expect(await (await Table.getRow(frame, {rowIndex: 0})).textContent()).toContain("20");
+  await expect(frame.getByText("Deselect all 20 keywords20")).toBeVisible();
   await wordsBox.removeWords([keyword]);
   await wordsBox.addWords([keyword2]);
   await frame.getByRole("button", { name: "Search" }).click();
   await Common.waitLoading(frame);
-  await expect(await (await Table.getRow(frame, {rowIndex: 0})).textContent()).toContain("20");
+  await expect(frame.getByText("Deselect all 20 keywords20")).not.toBeVisible();
 });

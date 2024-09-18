@@ -1,9 +1,14 @@
 import { FrameLocator, Locator } from "@playwright/test";
+import { Common } from "./Common";
+import { frame } from "../locators";
 
 /**
  * Class representing a table.
  */
 class Table {
+  public static nextBtn = (frame : FrameLocator) => frame.getByRole('button', { name: 'Next' });
+  public static prevBtn = (frame : FrameLocator) => frame.getByRole('button', { name: 'Previous' });
+
   /**
    * Return the row count excluding the header.
    * @param {FrameLocator} frame - The frame locator.
@@ -104,12 +109,12 @@ class Table {
   }
 
   /**
-   * Deselect all rows.
-   * @param {FrameLocator} frame - The frame locator.
-   * @returns {Promise<void>}
-   */
+  * Deselect or select all rows based on the number of rows.
+  * @param {FrameLocator} frame - The frame locator.
+  * @returns {Promise<void>}
+  */
   static async deselectAllRows(frame: FrameLocator): Promise<void> {
-    await frame.getByText('Deselect all 20 keywords' + await this.rowCount(frame)).click();
+    await frame.locator("span").filter({ hasText: /\d+ selected/ }).locator("..").click();
   }
 
   /**
@@ -141,7 +146,7 @@ class Table {
    * @returns {Promise<void>}
    */
   static async nextPage(frame: FrameLocator): Promise<void> {
-    await frame.getByLabel("Next").click();
+    await this.nextBtn(frame).click();
   }
 
   /**
@@ -150,7 +155,7 @@ class Table {
    * @returns {Promise<void>}
    */
   static async prevPage(frame: FrameLocator): Promise<void> {
-    await frame.getByLabel("Previous").click();
+    await this.prevBtn(frame).click();
   }
 
   /**
@@ -172,23 +177,19 @@ class Table {
   }
 
   /**
-   * Check if the table is sorted.
-   * @param {FrameLocator} frame - The frame locator.
-   * @param {boolean} currentPageOnly - Whether to check only the current page.
-   * @param {number} columnIndex - The index of the column to check.
-   * @param {(a: string, b: string) => number} compareFn - The comparison function.
-   * @returns {Promise<boolean>}
-   */
-  static async checkSorting(frame: FrameLocator, currentPageOnly: boolean, columnIndex: number, compareFn: (a: string, b: string) => number): Promise<boolean> {
+  * Check if the table is sorted.
+  * @param {FrameLocator} frame - The frame locator.
+  * @param {boolean} currentPageOnly - Whether to check only the current page.
+  * @param {number} columnIndex - The index of the column to check.
+  * @param {(a: string, b: string) => number} compareFn - The comparison function.
+  * @param {number} [limit] - The limit of the pages to check.
+  * @param {boolean} [printSteps] - Whether to print each comparison and its result.
+  * @returns {Promise<boolean>}
+  */
+  static async checkSorting(frame: FrameLocator, columnIndex: number, compareFn: (a: string, b: string) => number, limit?: number, printSteps?: boolean): Promise<boolean> {
     let data: string[] = [];
-
-    if (currentPageOnly) {
-      data = await Table.collectDataFromCurrentPage(frame, columnIndex);
-    } else {
-      data = await Table.collectDataFromAllPages(frame, columnIndex);
-    }
-
-    return Table.isDataSorted(data, compareFn);
+    data = await Table.collectDataFromPages(frame, columnIndex, limit);
+    return Table.isDataSorted(data, compareFn, printSteps);
   }
 
   /**
@@ -207,30 +208,40 @@ class Table {
   }
 
   /**
-   * Collect data from all pages.
-   * @param {FrameLocator} frame - The frame locator.
-   * @param {number} columnIndex - The index of the column to collect data from.
-   * @returns {Promise<string[]>}
-   */
-  private static async collectDataFromAllPages(frame: FrameLocator, columnIndex: number): Promise<string[]> {
+ * Collect data from all pages.
+ * @param {FrameLocator} frame - The frame locator.
+ * @param {number} columnIndex - The index of the column to collect data from.
+ * @param {number} [limit] - The limit of the pages to check.
+ * @returns {Promise<string[]>}
+ */
+  private static async collectDataFromPages(frame: FrameLocator, columnIndex: number, limit?: number): Promise<string[]> {
     let data: string[] = [];
+    let pageCount = 0;
     while (true) {
       data = [...data, ...await Table.collectDataFromCurrentPage(frame, columnIndex)];
+      pageCount++;
+      if (limit && pageCount >= limit) break;
       if (await Table.isLastPage(frame)) break;
       await Table.nextPage(frame);
+      await Common.waitLoading(frame);
     }
     return data;
   }
 
   /**
-   * Check if the data is sorted based on the comparison function.
-   * @param {string[]} data - The data to check.
-   * @param {(a: string, b: string) => number} compareFn - The comparison function.
-   * @returns {boolean}
-   */
-  private static isDataSorted(data: string[], compareFn: (a: string, b: string) => number): boolean {
+ * Check if the data is sorted based on the comparison function.
+ * @param {string[]} data - The data to check.
+ * @param {(a: string, b: string) => number} compareFn - The comparison function.
+ * @param {boolean} [printSteps] - Whether to print each comparison and its result.
+ * @returns {boolean}
+ */
+  private static isDataSorted(data: string[], compareFn: (a: string, b: string) => number, printSteps?: boolean): boolean {
     for (let i = 1; i < data.length; i++) {
-      if (compareFn(data[i - 1], data[i]) > 0) {
+      const result = compareFn(data[i - 1], data[i]);
+      if (printSteps) {
+        console.log(`Comparing "${data[i - 1]}" and "${data[i]}" : "${result}"`);
+      }
+      if (result > 0) {
         return false;
       }
     }
