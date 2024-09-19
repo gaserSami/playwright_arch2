@@ -10,6 +10,10 @@ class Common {
     await frame.locator(".Polaris-Spinner").waitFor({ state: "hidden" });
   }
 
+  static async waitButtonLoading(frame: FrameLocator): Promise<void> {
+    await frame.locator(".Polaris-Button--loading").waitFor({ state: "hidden" });
+  }
+
   /**
    * Simulate a slow network by adding a delay to all network requests.
    * @param {Page} page - The Playwright page object.
