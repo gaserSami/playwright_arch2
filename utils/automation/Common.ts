@@ -1,17 +1,32 @@
 import { FrameLocator, Page } from "@playwright/test";
 
 class Common {
-  /**
-  * Wait for to load spinner to vanish.
-  * @param {FrameLocator} frame - The frame locator.
-  * @returns {Promise<void>}
-  */
-  static async waitLoading(frame: FrameLocator): Promise<void> {
-    await frame.locator(".Polaris-Spinner").waitFor({ state: "hidden" });
-  }
+    /**
+    * Wait for the visible loading spinner to vanish.
+    * @param {FrameLocator} frame - The frame locator.
+    * @returns {Promise<void>}
+    */
+    static async waitLoading(frame: FrameLocator): Promise<void> {
+      const loadingSelectors = [
+        ".Polaris-Button--loading",
+        ".Polaris-Button__Spinner",
+        ".Polaris-Spinner"
+        // Add any other loading selectors you have
+      ];
+    
+      // Double-check if any loader is still visible
+      for (const selector of loadingSelectors) {
+        const isVisible = await frame.locator(selector).isVisible();
+        if (isVisible) {
+          await frame.locator(selector).waitFor({ state: "hidden", timeout: 30000 });
+          break; // Exit the loop once we've waited for a visible loader
+        }
+      }
+    }
 
   static async waitButtonLoading(frame: FrameLocator): Promise<void> {
     await frame.locator(".Polaris-Button--loading").waitFor({ state: "hidden" });
+    await frame.locator(".Polaris-Button__Spinner").waitFor({ state: "hidden" });
   }
 
   /**
