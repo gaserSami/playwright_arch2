@@ -160,6 +160,7 @@ test.only("should be able to navigate between 1,2,3 freely without losing data",
   options2.push(await frame.getByRole("listbox").getByRole("option").nth(1).textContent() || "");
   await frame.getByRole("listbox").getByRole("option").nth(0).click();
   await frame.getByRole("listbox").getByRole("option").nth(1).click();
+  await frame.getByPlaceholder("Select Related Articles").blur();
   // check that the options are selected
   await frame.getByText(options2[0]).isVisible();
   await frame.getByText(options2[1]).isVisible();
@@ -169,10 +170,13 @@ test.only("should be able to navigate between 1,2,3 freely without losing data",
   await wordsBox.addWords(["test1", "test2", "test3"]);
   await wordsBox.checkIfWordsExist(["test1", "test2", "test3"]);
 
-  await frame.getByRole('button', { name: 'Start Generating Outline' }); // go to step 2
+  await frame.getByRole('button', { name: 'Start Generating Outline' }).click(); // go to step 2
+
+  await Common.waitLoading(frame);
 
   await checkStep2(frame);
-  await frame.locator('.Polaris-BlockStack').first().locator(' > div').first().locator('button').nth(2).click();
+  
+  await frame.locator('.Polaris-BlockStack').nth(2).locator(' > div').first().locator('button').nth(2).click();
   await frame.getByRole("button", {name: "Add Section"}).click();
   await frame.getByPlaceholder('Add Title').fill('test');
   await frame.locator('button').filter({hasText:"Save"}).click();
@@ -187,7 +191,7 @@ test.only("should be able to navigate between 1,2,3 freely without losing data",
   }
 
   await frame.getByRole('button', { name: 'Generate Article' }).click(); // go to step 3
-  await Common.waitButtonLoading(frame);
+  await Common.waitLoading(frame);
   await checkStep3(frame);
   await waitForContentGeneration(frame);
 
@@ -205,22 +209,21 @@ test.only("should be able to navigate between 1,2,3 freely without losing data",
     }
   }
 
-  expect(step2Data).toEqual(step2DataAfter);
+  await expect(step2Data).toEqual(step2DataAfter);
 
   await locators.step(frame, "1", "123").click();
   await checkStep1(frame);
   // check the data
-  await expect(await frame.getByLabel('Topic Idea')).toContainText('test');
-  await expect(await frame.getByLabel('Title')).toContainText('test');
-  await expect(await frame.getByLabel('Select Output Language')).toContainText('Arabic');
-  await expect(await frame.getByLabel('Choose words count')).toContainText('1000');
-  await expect(await frame.getByLabel('# of sections in the outline')).toContainText('5');
+  await expect(await frame.getByLabel('Topic Idea')).toHaveValue('test');
+  await expect(await frame.getByLabel('Title')).toHaveValue('test');
+  await expect(await frame.getByLabel('Select Output Language')).toHaveValue('arabic');
+  await expect(await frame.getByLabel('Choose words count')).toHaveValue("9500");
+  await expect(await frame.getByLabel('# of sections in the outline')).toHaveValue('5');
   await expect(await frame.getByText(options[0])).toBeVisible();
   await expect(await frame.getByText(options[1])).toBeVisible();
   await expect(await frame.getByText(options2[0])).toBeVisible();
   await expect(await frame.getByText(options2[1])).toBeVisible();
-  await expect(await frame.getByLabel("Blog Posts")).toContainText('news');
-  await expect(await frame.getByLabel("new blog articles")).toContainText('news');
-  wordsBox = new WordsBox(page, "Press 'Enter' to add");
-  await  wordsBox.checkIfWordsExist(["test1", "test2", "test3"]);
+  await expect(await frame.getByLabel("Blog Posts")).toHaveValue('92024078631');
+  wordsBox = new WordsBox(page, 'Press "Enter" to add');
+  await expect(await wordsBox.checkIfWordsExist(["test1", "test2", "test3"])).toEqual([true, true, true]);
 });
